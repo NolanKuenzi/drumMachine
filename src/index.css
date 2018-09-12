@@ -37,7 +37,7 @@ input {
 
 #drumKeys {
 	height: 100%;
-	padding-bottom: 15em;
+	padding-bottom: 16em;
 	position: relative;
 	top: 0.5em;
 }
@@ -67,12 +67,11 @@ h1 {
 }
 
 #footer {
-	display: flex;
-	justify-content: center;
+	position: relative;
 	text-align: center;
+	margin-top: -3.5em;
 	color: orange;
 	color: #FF580F;
-	margin-top: -2.5em;
 }
 
 
