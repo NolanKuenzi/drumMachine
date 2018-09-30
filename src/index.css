@@ -8,6 +8,10 @@ body {
 	background-color: #00BFFF;
 }
 
+#drumPadContain {
+	height: 100%;
+}
+
 #header {
 	display: flex;
 	justify-content: center;
@@ -37,7 +41,7 @@ input {
 
 #drumKeys {
 	height: 100%;
-	padding-bottom: 17em;
+	padding-bottom: 15em;
 	position: relative;
 	top: 0.5em;
 }
@@ -69,7 +73,7 @@ h1 {
 #footer {
 	position: relative;
 	text-align: center;
-	margin-top: -4.5em;
+	margin-top: -3em;
 	color: orange;
 	color: #FF580F;
 }
