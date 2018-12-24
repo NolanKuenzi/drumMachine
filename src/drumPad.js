@@ -2,55 +2,57 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class DrumPad extends React.Component {
-
+  
   constructor(props) {
     super(props);
       this.state = {
         audioName: ""
       };
-      this.handleAudio = this.handleAudio.bind(this);
-    }
-
+    this.playAudio = this.playAudio.bind(this); 
+    this.playFunction = this.playFunction.bind(this);  
+  }
   componentDidMount() {
+    document.addEventListener("keyup", this.playFunction, false);
+    document.addEventListener("click", this.playFunction, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keyup", this.playFunction, false);
+    document.removeEventListener("click", this.playFunction, false);
+  }
+  playFunction(event) {
+    console.log(typeof event.target.id);
+    if (event.key === undefined) {
+      this.playAudio(event.target.lastChild.id);
+    } else {
+      this.playAudio(event.key);
+    }
+  }
+  playAudio(event) {
     const drumKeys = document.querySelectorAll(".drum-pad");
-    const audFunc = this.handleAudio;
-    document.addEventListener("keyup", function(event) {
-      for (let i = 0; i < drumKeys.length; i++) {
-        if (drumKeys[i].lastChild.id === event.key) {
-          audFunc(drumKeys[i]);
-        } 
-      }
-    }, false); 
-    document.addEventListener("click", function(event) {
-      for (let i = 0; i < drumKeys.length; i++) {
-        if (event.target.lastChild.id === drumKeys[i].lastChild.id) {
-          audFunc(drumKeys[i]);
+    for (let i = 0; i < drumKeys.length; i++) {
+      if (drumKeys[i].lastChild.id === event) {
+        this.setState({
+          audioName: drumKeys[i].id
+        });
+        if (!drumKeys[i].lastChild.paused) {
+          drumKeys[i].lastChild.load();
         }
-      }
-    }, false);
-  } 
-
-  handleAudio(event) {
-    this.setState({
-      audioName: event.id
-    });
-    if (!event.lastChild.paused) {
-      event.lastChild.load();
-    }  
-    event.lastChild.play();
-    event.style.opacity = "0.1";
-    setTimeout(() => event.style.opacity = "1", 800);
+        drumKeys[i].lastChild.play();
+        drumKeys[i].style.opacity = "0.1";
+        setTimeout(() => drumKeys[i].style.opacity = "1", 800);
+      } 
+    }
   }
   render() {
     return (
-      <div id="drumPadContain">	
+      <div id="drumPadContain">
         <div id="display"><input type="text" value={this.state.audioName}></input></div>	
           <div id="drumKeys">	
             
             <div className="row">
-              <div className="drum-pad" id="Heater-1"><h1>Q</h1>
+              <div className="drum-pad" id="Heater-1"  tabIndex="1"><h1>Q</h1>
                 <audio className="clip" id="q"><source src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3" type="audio/mp3" /></audio>
-	          </div>		
+	            </div>		
               <div className="drum-pad" id="Dsc_Oh"><h1>W</h1>
                 <audio className="clip" id="w"><source src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3" type="audio/mp3" /></audio>
               </div>	
@@ -82,7 +84,7 @@ class DrumPad extends React.Component {
                 <audio className="clip" id="c"><source src="https://s3.amazonaws.com/freecodecamp/drums/Dry_Ohh.mp3" type="audio/mp3" /></audio>
              </div>
             </div>	
-		  </div>
+		    </div>
         <div id="footer"><h4>Copyright © 2018 Nolan Kuenzi. Made for the freeCodeCamp Development Challenge: Build a Drum Machine.</h4></div>
       </div>
     );
